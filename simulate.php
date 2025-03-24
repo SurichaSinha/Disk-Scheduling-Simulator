@@ -27,6 +27,11 @@ $requests = array_map('intval', $data['requests']); // Convert requests to integ
 $head = intval($data['head']); // Convert head to integer
 $diskSize = $data['diskSize'] ?? 200; // Default disk size
 
+//Throughput Calculation
+function calculateThroughput($requests, $seekTime) {
+    return count($requests) / $seekTime; // Requests per unit of seek time
+}
+
 // Disk Scheduling Algorithms
 
 function fcfs($requests, $head) {
@@ -37,7 +42,25 @@ function fcfs($requests, $head) {
         $seekTime += abs($sequence[$i] - $sequence[$i - 1]);
     }
 
-    return ["sequence" => $sequence, "seekTime" => $seekTime, "avgSeekTime" => $seekTime / count($requests)];
+    return ["sequence" => $sequence, "seekTime" => $seekTime,
+    "avgSeekTime" => $seekTime / count($requests),
+    "throughput" => calculateThroughput($requests, $seekTime)];
+}
+
+function sstf($requests, $head) {
+    $seekTime = 0;
+    $sequence = [$head];
+    $pending = $requests;
+
+    while (!empty($pending)) {
+        usort($pending, fn($a, $b) => abs($a - $head) - abs($b - $head));
+        $next = array_shift($pending);
+        $seekTime += abs($head - $next);
+        $head = $next;
+        $sequence[] = $head;
+    }
+
+    return ["sequence" => $sequence, "seekTime" => $seekTime, "avgSeekTime" => $seekTime / count($requests),"throughput" => calculateThroughput($requests, $seekTime)];
 }
 
 
