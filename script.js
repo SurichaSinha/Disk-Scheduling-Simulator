@@ -1,3 +1,5 @@
+let chartInstance = null;  // Declare a global variable to store the chart instance.
+
 function runAlgorithm() {
     const requests = document.getElementById('requests').value.split(',').map(Number);
     const head = parseInt(document.getElementById('head').value);
@@ -22,7 +24,13 @@ function runAlgorithm() {
 
 function visualizeDiskMovement(sequence) {
     const ctx = document.getElementById('chart').getContext('2d');
-    new Chart(ctx, {
+ 
+    
+    if (chartInstance) {  
+        chartInstance.destroy();  // Destroys the previous chart instance before creating a new one to prevent overlapping issues.**
+    }
+
+    chartInstance=new Chart(ctx, {
         type: 'line',
         data: {
             labels: sequence,
