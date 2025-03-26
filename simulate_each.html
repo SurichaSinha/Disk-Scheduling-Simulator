@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disk Scheduling Visualizer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-900 text-white">
+    <nav class="relative p-4">
+        <div class="container mx-auto flex justify-between items-center ml-3">
+            <div class="flex justify-between items-center">
+                <a href="#" class="text-white text-xl font-bold">Disk Scheduling Simulator </a>
+                <img src="image2.png" class="h-12">
+            </div>
+            <ul class="flex space-x-6">
+                <li><a href="index.html" class="text-white hover:underline">Home</a></li>
+                <li><a href="about.html" class="text-white hover:underline">About</a></li>
+            </ul>
+        </div>
+    </nav>
+    <header class="text-center p-5 bg-gray-800 shadow-lg">
+        <h1 class="text-3xl font-bold">Disk Scheduling Visualizer</h1>
+    </header>
+
+    <main class="container mx-auto p-6">
+        <div class="grid grid-cols-2 gap-8">
+            <!-- Left Panel -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 id="algoDisplay" class="text-xl font-semibold mb-4">
+                    <!-- This will be updated via JS with the chosen algorithm name -->
+                </h2>
+
+                <!--  add details about the algorithm -->
+                <p id="algoDetails" class="mb-4 text-sm text-gray-300"></p>
+                
+                <div class="mt-4">
+                    <p class="text-sm">Enter disk requests (comma-separated):</p>
+                    <input id="requests" class="w-full p-2 rounded bg-gray-700 text-white" placeholder="e.g., 98,183,37,122,14,124,65,67">
+                </div>
+                <div class="mt-4">
+                    <p class="text-sm">Initial Head Position:</p>
+                    <input id="head" type="number" class="w-full p-2 rounded bg-gray-700 text-white" placeholder="e.g., 53">
+                </div>
+                
+                
+                <!-- Left/right selection shown only for applicable algorithms -->
+                <div id="direction-container" class="mt-4 hidden">
+                    <p class="text-sm">Select Direction:</p>
+                    <select id="direction" class="w-full p-2 rounded bg-gray-700 text-white">
+                        <option value="left">Left</option>
+                        <option value="right">Right</option>
+                    </select>
+                </div>
+                <button onclick="runAlgorithm()" class="mt-4 w-full p-3 bg-green-600 hover:bg-green-500 rounded text-white font-bold">Run Simulation</button>
+            </div>
+
+            <!-- Right Panel (Visualization) -->
+            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-semibold">Results</h2>
+                <p id="sequence" class="mt-4"></p>
+                <p id="seekTime"></p>
+                <p id="avgSeekTime"></p>
+                <p id="throughput"></p>
+                <canvas id="chart" class="mt-6"></canvas>
+            </div>
+        </div>
+    </main>
+    <!-- Script to set up algorithm display -->
+    <script>
+        // Read the 'algo' parameter from URL and update the algorithm display accordingly.
+        const urlParams = new URLSearchParams(window.location.search);
+        const algoParam = urlParams.get('algo');
+        
+        //  description for the chosen algorithm.
+            const algoDetails = {
+                "FCFS": "Processes requests in the order they arrive.",
+                "SSTF": "Serves the request closest to the current head position.",
+                "SCAN": "Moves in one direction, servicing requests, then reverses.",
+                "CSCAN": "Moves in one direction; on reaching the end, it jumps to the start.",
+                "LOOK": "Like SCAN but stops at the last request.",
+                "CLOOK": "Like CSCAN but only goes as far as the last request."
+            };
+           
+            if (algoParam) {
+                // Display the selected algorithm name.
+                document.getElementById('algoDisplay').innerText = algoParam + " Simulation";
+                // Display details for the selected algorithm.
+                document.getElementById('algoDetails').innerText = algoDetails[algoParam] || "";
+                
+                // Show direction selector only if algorithm requires it
+                if (["SCAN", "CSCAN", "LOOK", "CLOOK"].includes(algoParam.toUpperCase())) {
+                    document.getElementById('direction-container').classList.remove('hidden');
+                }
+            }
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>
