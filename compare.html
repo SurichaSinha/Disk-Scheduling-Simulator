@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Disk Scheduling Algorithm Comparison</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white">
+    <nav class="relative p-4">
+        <div class="container mx-auto flex justify-between items-center ml-3">
+            <div class="flex justify-between items-center">
+                <a href="#" class="text-white text-xl font-bold">Disk Scheduling Simulator </a>
+                <img src="image2.png" class="h-12">
+            </div>
+            <ul class="flex space-x-6">
+                <li><a href="index.html" class="text-white hover:underline">Home</a></li>
+                <li><a href="about.html" class="text-white hover:underline">About</a></li>
+            </ul>
+        </div>
+    </nav>
+    <header class="text-center p-5 bg-gray-800 shadow-lg">
+        <h1 class="text-3xl font-bold">Disk Scheduling Comparison</h1>
+    </header>
+    <div class="mx-auto p-6">
+        
+        <div class="mb-4">
+            <label class="block font-semibold">Requests (comma-separated):</label>
+            <input type="text" id="requests" class="w-full p-2 border rounded bg-gray-700 text-white" placeholder="e.g., 98,183,37,122,14,124,65,67">
+        </div>
+        
+        <div class="mb-4">
+            <label class="block font-semibold">Head Position:</label>
+            <input type="text" id="head" class="w-full p-2 border rounded bg-gray-700 text-white" placeholder="e.g., 53">
+        </div>
+        
+        <div class="mb-4">
+            <label class="block font-semibold">Algorithms to Compare:</label>
+            <div class="space-y-2">
+                <label><input type="checkbox" id="fcfs" value="fcfs" > FCFS</label>
+                <label><input type="checkbox" id="sstf" value="sstf" > SSTF</label>
+                <label><input type="checkbox" id="scan" value="scan"> SCAN</label>
+                <label><input type="checkbox" id="cscan" value="cscan"> C-SCAN</label>
+                <label><input type="checkbox" id="look" value="look"> LOOK</label>
+                <label><input type="checkbox" id="clook" value="clook"> C-LOOK</label>
+            </div>
+        </div>
+        
+        <div class="mb-4 hidden" id="direction-container">
+            <label class="block font-semibold">Direction:</label>
+            <select id="direction" class="w-full p-2 border rounded bg-gray-700 text-white">
+                <option value="left">Left</option>
+                <option value="right">Right</option>
+            </select>
+        </div>
+        
+        <button onclick="compareAlgorithms()" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Compare Algorithms</button>
+        
+        <div class="mt-6">
+            <table class="w-full border-collapse border border-gray-300 text-center">
+                <thead>
+                    <tr class="bg-gray-200 bg-gray-700 text-white">
+                        <th class="border p-2">Algorithm</th>
+                        <th class="border p-2">Sequence</th>
+                        <th class="border p-2">Total Seek Time</th>
+                        <th class="border p-2">Avg Seek Time</th>
+                        <th class="border p-2">Throughput</th>
+                    </tr>
+                </thead>
+                <tbody id="comparisonTableBody"></tbody>
+            </table>
+        </div>
+        
+        <div class="mt-6">
+            <canvas id="comparisonChart" class="w-full h-96"></canvas>
+        </div>
+    </div>
+
+    <script>
+        let chartInstance = null;
+
+        function compareAlgorithms() {
+            const requestsInput = document.getElementById('requests').value;
+            const head = document.getElementById('head').value;
+            const direction = document.getElementById('direction').value;
+            
+            if (!requestsInput.trim() || !head.trim()) {
+                alert("Please fill in both requests and head position fields.");
+                return;
+            }
+
+            const requests = requestsInput.split(',').map(Number);
+            const headParsed = parseInt(head);
+            const selectedAlgorithms = getSelectedAlgorithms();
+
+            if (selectedAlgorithms.length === 0) {
+                alert("Please select at least one algorithm to compare.");
+                return;
+            }
+
+            const promises = selectedAlgorithms.map(algorithm => 
+                fetch('backend.php', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        algorithm, 
+                        requests, 
+                        head: headParsed, 
+                        direction: ['scan', 'cscan', 'look', 'clook'].includes(algorithm) ? direction : ''
+                    })
+                }).then(response => response.json())
+            );
+
+            Promise.all(promises)
+                .then(results => {
+                    displayComparisonTable(results, selectedAlgorithms);
+                    visualizeComparison(results, selectedAlgorithms);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function getSelectedAlgorithms() {
+            return Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
+        }
+
+        function displayComparisonTable(results, algorithms) {
+            const tbody = document.getElementById('comparisonTableBody');
+            tbody.innerHTML = '';
+            results.forEach((data, index) => {
+                const row = `<tr class="border">
+                    <td class="border p-2">${algorithms[index].toUpperCase()}</td>
+                    <td class="border p-2">${data.sequence.join('->')}</td>
+                    <td class="border p-2">${data.seekTime}</td>
+                    <td class="border p-2">${data.avgSeekTime}</td>
+                    <td class="border p-2">${data.throughput}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function visualizeComparison(results, algorithms) {
+            const ctx = document.getElementById('comparisonChart').getContext('2d');
+            
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: results[0].sequence,
+                    datasets: results.map((data, index) => ({
+                        label: algorithms[index].toUpperCase(),
+                        data: data.sequence,
+                        borderColor: getRandomColor(),
+                        borderWidth: 2,
+                        fill: false
+                    }))
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { title: { display: true, text: 'Cylinder Number' } },
+                        y: { title: { display: true, text: 'Time' } }
+                    }
+                }
+            });
+        }
+
+        function getRandomColor() {
+            return '#' + Math.floor(Math.random()*16777215).toString(16);
+        }
+
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                const needsDirection = getSelectedAlgorithms().some(alg => ['scan', 'cscan', 'look', 'clook'].includes(alg));
+                document.getElementById('direction-container').classList.toggle('hidden', !needsDirection);
+            });
+        });
+    </script>
+</body>
+</html>
