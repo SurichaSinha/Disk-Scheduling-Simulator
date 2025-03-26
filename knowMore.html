@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Disk Scheduling Algorithm</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="relative min-h-screen bg-cover bg-center p-5" style="background-image: url('Web_Photo_Editor.jpg');">
+    <nav class="relative p-4">
+        <div class="container mx-auto flex justify-between items-center ml-3">
+            <div class="flex justify-between items-center">
+                <a href="#" class="text-white text-xl font-bold">Disk Scheduling Simulator </a>
+                <img src="image2.png" class="h-12">
+            </div>
+            <ul class="flex space-x-6">
+                <li><a href="index.html" class="text-white hover:underline">Home</a></li>
+                <li><a href="about.html" class="text-white hover:underline">About</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="absolute inset-0 bg-cover bg-center filter blur-lg" style="background-image: url('image.png');"></div>
+
+    <div class="relative flex flex-col items-center justify-center h-full text-white text-center space-y-6">
+        <h1 class="text-4xl font-bold mt-4">Disk Scheduling Algorithms</h1>
+
+        <div class="grid grid-cols-3 gap-6 w-full max-w-6xl">
+            <div class="border rounded-lg p-5 bg-gray-400 bg-opacity-50 flex flex-col h-full">
+                <div class="flex-grow">
+                    <h2 class="font-bold">First-Come, First-Served</h2>
+                    <h2>(FCFS)</h2>
+                    <ul class="list-disc list-inside text-left text-sm mt-2">
+                        <li>The simplest disk scheduling algorithm.</li>
+                        <li>Requests are processed in the order they arrive.</li>
+                        <li><strong>Pros:</strong> Fair and easy to implement.</li>
+                        <li><strong>Cons:</strong> Can cause high seek times (poor performance).</li>
+                    </ul>
+                </div>
+                <div class="flex justify-end mt-4">
+                    <a href="simulate_each.html?algo=FCFS">
+                        <button class="px-6 py-2 bg-rose-400 border-2 border-white text-white rounded-lg hover:bg-rose-600">
+                            Simulate
+                        </button>
+                    </a>
+                </div>
+            </div>
+
+            <div class="border rounded-lg p-5 bg-gray-400 bg-opacity-50 flex flex-col h-full">
+                <div class="flex-grow">
+                    <h2 class="font-bold">Shortest Seek Time First</h2>
+                    <h2>(SSTF)</h2>
+                    <ul class="list-disc list-inside text-left text-sm mt-2">
+                        <li>Picks the request closest to the current disk head position.</li>
+                        <li><strong>Pros:</strong> Reduces seek time compared to FCFS.</li>
+                        <li><strong>Cons:</strong> May lead to starvation.</li>
+                    </ul>
+                </div>
+                <div class="flex justify-end mt-4">
+                    <a href="simulate_each.html?algo=SSTF">
+                        <button class="px-6 py-2 bg-rose-400 border-2 border-white text-white rounded-lg hover:bg-rose-600">
+                            Simulate
+                        </button>
+                    </a>
+                </div>
+            </div>
+
+            <div class="border rounded-lg p-5 bg-gray-400 bg-opacity-50 flex flex-col h-full">
+                <div class="flex-grow">
+                    <h2 class="font-bold">Elevator Algorithm</h2>
+                    <h2>(SCAN)</h2>
+                    <ul class="list-disc list-inside text-left text-sm mt-2">
+                        <li>Moves in one direction, serving requests, then reverses direction.</li>
+                        <li><strong>Pros:</strong> Avoids starvation.</li>
+                        <li><strong>Cons:</strong> Higher seek time for edge requests.</li>
+                    </ul>
+                </div>
+                <div class="flex justify-end mt-4">
+                    <a href="simulate_each.html?algo=SCAN">
+                        <button class="px-6 py-2 bg-rose-400 border-2 border-white text-white rounded-lg hover:bg-rose-600">
+                            Simulate
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-6 w-full max-w-6xl">
+            <div class="border rounded-lg p-5 bg-gray-400 bg-opacity-50 flex flex-col h-full">
+                <div class="flex-grow">
+                    <h2 class="font-bold">Circular Scan</h2>
+                    <h2>(C-SCAN)</h2>
+                    <ul class="list-disc list-inside text-left text-sm mt-2">
+                        li>Moves in one direction, then jumps back to the beginning without serving requests on the return.</li>
+                        <li><strong>Pros:</strong> Provides uniform wait times.</li>
+                        <li><strong>Cons:</strong> Slightly more seek time than SCAN.</li>
+                    </ul>
+                </div>
+                <div class="flex justify-end mt-4">
+                    <a href="simulate_each.html?algo=CSCAN">
+                        <button class="px-6 py-2 bg-rose-400 border-2 border-white text-white rounded-lg hover:bg-rose-600">
+                            Simulate
+                        </button>
+                    </a>
+                </div>
+            </div>
+
+            <div class="border rounded-lg p-5 bg-gray-400 bg-opacity-50 flex flex-col h-full">
+                <div class="flex-grow">
+                    <h2 class="font-bold">Elevator LOOK Algorithm</h2>
+                    <h2>(LOOK)</h2>
+                    <ul class="list-disc list-inside text-left text-sm mt-2">
+                        <li>Works like SCAN but stops at the last request instead of going to the disk edge.</li>
+                        <li><strong>Pros:</strong> Reduces unnecessary movement.</li>
+                        <li><strong>Cons:</strong> Performance depends on request distribution.</li>
+                    </ul>
+                </div>
+                <div class="flex justify-end mt-4">
+                    <a href="simulate_each.html?algo=LOOK">
+                        <button class="px-6 py-2 bg-rose-400 border-2 border-white text-white rounded-lg hover:bg-rose-600">
+                            Simulate
+                        </button>
+                    </a>
+                </div>
+            </div>
+
+            <div class="border rounded-lg p-5 bg-gray-400 bg-opacity-50 flex flex-col h-full">
+                <div class="flex-grow">
+                    <h2 class="font-bold">Circular Look</h2>
+                    <h2>(C-LOOK)</h2>
+                    <ul class="list-disc list-inside text-left text-sm mt-2">
+                        <li>Works like C-SCAN but stops at the last request before jumping back.</li>
+                        <li><strong>Pros:</strong> Less seek time than C-SCAN.</li>
+                        <li><strong>Cons:</strong> Slightly more complex than LOOK.</li>
+                    </ul>
+                </div>
+                <div class="flex justify-end mt-4">
+                    <a href="simulate_each.html?algo=CLOOK">
+                        <button class="px-6 py-2 bg-rose-400 border-2 border-white text-white rounded-lg hover:bg-rose-600">
+                            Simulate
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+</body>
+</html>
