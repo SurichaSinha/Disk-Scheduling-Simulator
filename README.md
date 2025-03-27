@@ -1,5 +1,7 @@
 # Advanced Disk Scheduling Simulator
 
+# Live Demo: http://advanceddiskschedulingsimulator.free.nf/
+
 # Overview
 The Advanced Disk Scheduling Simulator is an interactive web-based project that simulates various disk scheduling algorithms. It provides detailed visualization and performance metrics, including Total Seek Time, Execution Sequence, and Average Seek Time. The project is built using PHP for backend processing, JavaScript (with Chart.js) for visualization, and Tailwind CSS for a modern, responsive user interface.
 
@@ -9,7 +11,7 @@ The Advanced Disk Scheduling Simulator is an interactive web-based project that 
   - SSTF (Shortest Seek Time First)
   - SCAN (Elevator Algorithm)
   - C-SCAN (Circular SCAN)
-  - LOOK
+  - LOOK 
   - C-LOOK
 
 - Dynamic Visualization:  
@@ -85,6 +87,16 @@ AdvancedDiskSchedulingSimulator/
 
 - Visualization:  
   Upon receiving results from the backend, the JavaScript function `visualizeDiskMovement()` uses Chart.js to render a line graph depicting the disk head movements.
+
+# Visualization (Graph Module)
+- Data Processing:  
+  The seek sequence and movement data received from the backend are parsed in JavaScript.
+  
+- Graph Rendering:
+  Chart.js is used to plot the disk scheduling execution path, with the x-axis representing request order and the y-axis representing track positions.
+
+- Animation & UI Enhancements:
+  Transitions and color coding are added to improve clarity between different algorithms.
 
 # Backend (PHP Module)
 - Input Processing:  
