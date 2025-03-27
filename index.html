@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,47 +8,47 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="relative h-screen bg-cover bg-center bg-fixed" style="background-image: url('Web_Photo_Editor.jpg  ');">
+<body class="relative h-screen bg-cover bg-center bg-fixed " style="background-image: url('bg5.jpg');">
     
-    <nav class="relative p-4">
-        <div class="container mx-auto flex justify-between items-center ml-3">
-            <div class="flex justify-between items-center">
-                <a href="#" class="text-white text-xl font-bold">Disk Scheduling Simulator </a>
-                <img src="image2.png" class="h-12">
+    <!-- Navigation Bar with translucent background -->
+    <nav class="relative p-4 bg-black bg-opacity-60 shadow-lg">  
+        <div class="container mx-auto flex justify-between items-center px-6">  
+            <div class="flex items-center space-x-3">
+                <img src="logofinal.png" class="h-12">
+
+                <a href="index.html" class="text-white text-2xl font-bold">Disk Scheduling Simulator</a> 
             </div>
-            <ul class="flex space-x-6">
-                <li><a href="index.html" class="text-white hover:underline">Home</a></li>
-                <li><a href="about.html" class="text-white hover:underline">About</a></li>
+            <ul class="flex space-x-6 ml-8">  
+                <li><a href="index.html" class="text-white text-lg font-semibold inline-block transition-transform duration-300 ease-in-out transform will-change-transform hover:scale-110 ">Home</a></li> 
+                <li><a href="about.html" class="text-white text-lg font-semibold inline-block transition-transform duration-300 ease-in-out transform will-change-transform hover:scale-110 ">About Us</a></li>
             </ul>
         </div>
     </nav>
-    
 
-    <div class="relative flex flex-col items-center justify-center h-full text-white text-center space-y-6">
 
-        <div class="relative max-w-lg">
-            <h1 class="text-4xl font-bold">Explore Disk Scheduling Algorithms</h1>
-            <br>
-            <p class="mt-2 text-lg">
-                It is the process of deciding the order in which disk I/O requests are
-                serviced to optimize performance. Since disk access time depends on seek 
-                time (moving the read/write head), scheduling algorithms aim to minimize 
+        <div class="main-container relative flex flex-col items-center justify-center text-white text-center space-y-6 pt-20">
+
+        <div class="relative max-w-2xl"> 
+            <h1 class="text-6xl font-extrabold tracking-wide">Explore Disk Scheduling Algorithms</h1> 
+            <p class="mt-4 text-xl leading-relaxed"> 
+                It is the process of deciding the order in which disk I/O requests are serviced to optimize performance. 
+                Since disk access time depends on seek time (moving the read/write head), scheduling algorithms aim to minimize 
                 movement and improve efficiency.
             </p>
         </div>
 
-        <div class="relative space-x-4">
+        
+        <div class="relative space-x-6">
             <a href="knowMore.html">
-                <button class="px-6 py-2 bg-blue-600 border-2 border-white text-white rounded-lg hover:bg-blue-700">Know More</button>
+                <button class="px-8 py-3 text-lg font-semibold text-white bg-white/20 border-2 border-white rounded-xl shadow-md backdrop-blur-md hover:bg-white/40 transition">Know More</button>
             </a>
             <a href="simulate.html">
-                <button class="px-6 py-2 bg-green-600 border-2 border-white text-white rounded-lg hover:bg-green-700">Simulate</button>
+                <button class="px-8 py-3 text-lg font-semibold text-white bg-white/20 border-2 border-white rounded-xl shadow-md backdrop-blur-md hover:bg-white/40 transition">Simulate</button>
             </a>
             <a href="compare.html">
-                <button class="px-6 py-2 bg-green-600 border-2 border-white text-white rounded-lg hover:bg-green-700">Compare</button>
+                <button class="px-8 py-3 text-lg font-semibold text-white bg-white/20 border-2 border-white rounded-xl shadow-md backdrop-blur-md hover:bg-white/40 transition">Compare</button>
             </a>
         </div>
     </div>
 </body>
-
 </html>

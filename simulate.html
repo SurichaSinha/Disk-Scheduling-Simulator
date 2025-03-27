@@ -3,74 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disk Scheduling Visualizer</title>
+    <title>Disk Scheduling Simulation</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="bg-gray-900 text-white">
-    <nav class="relative p-4">
-        <div class="container mx-auto flex justify-between items-center ml-3">
-            <div class="flex justify-between items-center">
-                <a href="#" class="text-white text-xl font-bold">Disk Scheduling Simulator </a>
-                <img src="image2.png" class="h-12">
+<body class="relative min-h-screen bg-cover bg-center text-white" style="background-image: url('bg5.jpg');">
+    <nav class="relative p-4 bg-black bg-opacity-60 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center px-6">
+            <div class="flex items-center space-x-3">
+                <img src="logofinal.png" class="h-12">
+                <a href="index.html" class="text-white text-2xl font-bold">Disk Scheduling Simulator</a>
             </div>
-            <ul class="flex space-x-6">
-                <li><a href="index.html" class="text-white hover:underline">Home</a></li>
-                <li><a href="about.html" class="text-white hover:underline">About</a></li>
+            <ul class="flex space-x-6 ml-8">
+                <li><a href="index.html" class="text-white text-lg font-semibold inline-block transition-transform duration-300 ease-in-out transform will-change-transform hover:scale-110">Home</a></li>
+                <li><a href="about.html" class="text-white text-lg font-semibold inline-block transition-transform duration-300 ease-in-out transform will-change-transform hover:scale-110">About Us</a></li>
             </ul>
         </div>
     </nav>
-    <header class="text-center p-5 bg-gray-800 shadow-lg">
-        <h1 class="text-3xl font-bold">Disk Scheduling Visualizer</h1>
-    </header>
 
-    <main class="container mx-auto p-6">
-        <div class="grid grid-cols-2 gap-8">
-            <!-- Left Panel -->
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-xl font-semibold">Enter Disk Scheduling Data</h2>
-                <div class="mt-4">
-                    <p class="text-sm">Enter disk requests (comma-separated):</p>
-                    <input id="requests" class="w-full p-2 rounded bg-gray-700 text-white" placeholder="e.g., 98,183,37,122,14,124,65,67">
-                </div>
-                <div class="mt-4">
-                    <p class="text-sm">Initial Head Position:</p>
-                    <input id="head" type="number" class="w-full p-2 rounded bg-gray-700 text-white" placeholder="e.g., 53">
-                </div>
-                <div class="mt-4">
-                    <p class="text-sm">Select Algorithm:</p>
-                    <select id="algorithm" class="w-full p-2 rounded bg-gray-700 text-white">
-                        <option value="fcfs">FCFS</option>
-                        <option value="sstf">SSTF</option>
-                        <option value="scan">SCAN</option>
-                        <option value="cscan">C-SCAN</option>
-                        <option value="look">LOOK</option>
-                        <option value="clook">C-LOOK</option>
-                    </select>
-                </div>
-                <div id="direction-container" class="mt-4 hidden">
-                    <p class="text-sm">Select Direction:</p>
-                    <select id="direction" class="w-full p-2 rounded bg-gray-700 text-white">
-                        <option value="left">Left</option>
-                        <option value="right">Right</option>
-                    </select>
-                </div>
-                <button onclick="runAlgorithm()" class="mt-4 w-full p-3 bg-green-600 hover:bg-green-500 rounded text-white font-bold">Run Simulation</button>
+    <div class="flex flex-col items-center min-h-[calc(100vh-4rem)] space-y-6 pt-6 px-4 pb-12">
+        <!--  heading -->
+        <h1 class="text-4xl font-bold">Disk Scheduling Simulation</h1>
+
+        <!-- content -->
+        <div class="w-full flex flex-col items-center space-y-6">
+            <!-- Input Fields -->
+            <div class="max-w-md w-full">
+                <label for="requests" class="block text-lg font-semibold text-center">Enter Requests (comma-separated):</label>
+                <input id="requests" class="mt-1 p-2 w-full bg-gray-700 text-white border rounded" placeholder="e.g., 98,183,124,65,67 (Maximum value: 199)">
+            </div>
+            <div class="max-w-md w-full">
+                <label for="head" class="block text-lg font-semibold text-center">Initial Head Position:</label>
+                <input id="head" type="number" class="mt-1 p-2 w-full bg-gray-700 text-white border rounded" placeholder="e.g., 53 (Maximum value: 199)">
+            </div>
+            <div class="max-w-md w-full">
+                <label for="algorithm" class="block text-lg font-semibold text-center">Select Algorithm:</label>
+                <select id="algorithm" class="mt-1 p-2 w-full bg-gray-700 text-white border rounded">
+                    <option value="fcfs">FCFS</option>
+                    <option value="sstf">SSTF</option>
+                    <option value="scan">SCAN</option>
+                    <option value="cscan">C-SCAN</option>
+                    <option value="look">LOOK</option>
+                    <option value="clook">C-LOOK</option>
+                </select>
+            </div>
+            <div id="direction-container" class="max-w-md w-full hidden">
+                <label for="direction" class="block text-lg font-semibold text-center">Select Direction:</label>
+                <select id="direction" class="mt-1 p-2 w-full bg-gray-700 text-white border rounded">
+                    <option value="left">Left</option>
+                    <option value="right">Right</option>
+                </select>
             </div>
 
-            <!-- Right Panel (Visualization) -->
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-xl font-semibold">Results</h2>
-                <p id="sequence" class="mt-4"></p>
-                <p id="seekTime"></p>
-                <p id="avgSeekTime"></p>
-                <p id="throughput"></p>
-                <canvas id="chart"></canvas>
+            <!-- Run Simulation Button -->
+            <button onclick="runSimulationAndScroll()" class="px-6 py-2 bg-[#c562ae] text-white rounded-lg hover:bg-[#a34c8d]">Run Simulation</button>
+
+            <!-- Output Section -->
+            <div id="results-section" class="max-w-md w-full space-y-2 text-center">
+                <p id="sequence" class="text-lg whitespace-nowrap"></p>
+                <p id="seekTime" class="text-lg"></p>
+                <p id="avgSeekTime" class="text-lg"></p>
+                <p id="throughput" class="text-lg"></p>
+            </div>
+
+            <!-- Chart with white background -->
+            <div id="chart-container" class="max-w-4xl w-full bg-white border rounded-lg p-4 hidden mb-12">
+                <canvas id="chart" class="w-full h-64"></canvas>
             </div>
         </div>
-    </main>
+    </div>
+
     <script>
+        // Direction visibility logic
         document.getElementById("algorithm").addEventListener("change", function () {
             const directionContainer = document.getElementById("direction-container");
             if (["scan", "cscan", "look", "clook"].includes(this.value)) {
@@ -79,7 +84,31 @@
                 directionContainer.classList.add("hidden"); // Hide dropdown
             }
         });
+
+        // Function to run simulation, show chart, and scroll to results
+        function runSimulationAndScroll() {
+            // Run the simulation
+            runAlgorithm();
+
+            // Show the chart container
+            const chartContainer = document.getElementById("chart-container");
+            if (chartContainer) {
+                chartContainer.classList.remove("hidden");
+            }
+
+            // Scroll to the results section 
+            setTimeout(() => {
+                const resultsSection = document.getElementById("results-section");
+                if (resultsSection) {
+                    const rect = resultsSection.getBoundingClientRect();
+                    const scrollPosition = rect.top + window.scrollY - 10;
+                    window.scrollTo({ top: scrollPosition, behavior: "smooth" });
+                    console.log("Scrolled to position:", scrollPosition);
+                }
+            }, 100);
+        }
     </script>
-    <script src="script.js"></script>
+    <script src="script2.js"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'926f5eba29fe53f9',t:'MTc0MzA4MzU2NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>

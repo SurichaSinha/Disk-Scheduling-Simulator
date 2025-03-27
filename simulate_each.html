@@ -3,100 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disk Scheduling Visualizer</title>
+    <title>Disk Scheduling Simulation</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js" defer></script>
 </head>
-<body class="bg-gray-900 text-white">
-    <nav class="relative p-4">
-        <div class="container mx-auto flex justify-between items-center ml-3">
-            <div class="flex justify-between items-center">
-                <a href="#" class="text-white text-xl font-bold">Disk Scheduling Simulator </a>
-                <img src="image2.png" class="h-12">
+<body class="relative min-h-screen bg-cover bg-center text-white" style="background-image: url('bg5.jpg');">
+    <nav class="relative p-4 bg-black bg-opacity-60 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center px-6">
+            <div class="flex items-center space-x-3">
+                <img src="logofinal.png" class="h-12">
+                <a href="index.html" class="text-white text-2xl font-bold">Disk Scheduling Simulator</a>
             </div>
-            <ul class="flex space-x-6">
-                <li><a href="index.html" class="text-white hover:underline">Home</a></li>
-                <li><a href="about.html" class="text-white hover:underline">About</a></li>
+            <ul class="flex space-x-6 ml-8">
+                <li><a href="index.html" class="text-white text-lg font-semibold inline-block transition-transform duration-300 ease-in-out transform will-change-transform hover:scale-110">Home</a></li>
+                <li><a href="about.html" class="text-white text-lg font-semibold inline-block transition-transform duration-300 ease-in-out transform will-change-transform hover:scale-110">About Us</a></li>
             </ul>
         </div>
     </nav>
-    <header class="text-center p-5 bg-gray-800 shadow-lg">
-        <h1 class="text-3xl font-bold">Disk Scheduling Visualizer</h1>
-    </header>
 
-    <main class="container mx-auto p-6">
-        <div class="grid grid-cols-2 gap-8">
-            <!-- Left Panel -->
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 id="algoDisplay" class="text-xl font-semibold mb-4">
-                    <!-- This will be updated via JS with the chosen algorithm name -->
-                </h2>
+    <div class="flex flex-col items-center min-h-[calc(100vh-4rem)] space-y-6 pt-6 px-4 pb-12">
+        <!-- Algorithm-specific heading -->
+        <h1 id="algoHeading" class="text-4xl font-bold"></h1>
 
-                <!--  add details about the algorithm -->
-                <p id="algoDetails" class="mb-4 text-sm text-gray-300"></p>
-                
-                <div class="mt-4">
-                    <p class="text-sm">Enter disk requests (comma-separated):</p>
-                    <input id="requests" class="w-full p-2 rounded bg-gray-700 text-white" placeholder="e.g., 98,183,37,122,14,124,65,67">
-                </div>
-                <div class="mt-4">
-                    <p class="text-sm">Initial Head Position:</p>
-                    <input id="head" type="number" class="w-full p-2 rounded bg-gray-700 text-white" placeholder="e.g., 53">
-                </div>
-                
-                
-                <!-- Left/right selection shown only for applicable algorithms -->
-                <div id="direction-container" class="mt-4 hidden">
-                    <p class="text-sm">Select Direction:</p>
-                    <select id="direction" class="w-full p-2 rounded bg-gray-700 text-white">
-                        <option value="left">Left</option>
-                        <option value="right">Right</option>
-                    </select>
-                </div>
-                <button onclick="runAlgorithm()" class="mt-4 w-full p-3 bg-green-600 hover:bg-green-500 rounded text-white font-bold">Run Simulation</button>
-            </div>
+        <!-- Algorithm Details -->
+        <p id="algoDetails" class="max-w-2xl text-left"></p>
 
-            <!-- Right Panel (Visualization) -->
-            <div class="bg-gray-800 p-6 rounded-lg shadow-md">
-                <h2 class="text-xl font-semibold">Results</h2>
-                <p id="sequence" class="mt-4"></p>
-                <p id="seekTime"></p>
-                <p id="avgSeekTime"></p>
-                <p id="throughput"></p>
-                <canvas id="chart" class="mt-6"></canvas>
-            </div>
+        <!-- Input Fields -->
+        <div class="w-full max-w-md">
+            <label for="requests" class="block text-lg font-semibold text-center">Enter Requests (comma-separated):</label>
+            <input type="text" id="requests" class="mt-1 p-2 w-full bg-gray-700 text-white border rounded" placeholder="e.g., 98,183,37,122 (Maximum value: 199)">
         </div>
-    </main>
-    <!-- Script to set up algorithm display -->
+        <div class="w-full max-w-md">
+            <label for="head" class="block text-lg font-semibold text-center">Head Position:</label>
+            <input type="number" id="head" class="mt-1 p-2 w-full bg-gray-700 text-white border rounded" placeholder="e.g., 53 (Maximum value: 199)">
+        </div>
+        <div id="direction-container" class="w-full max-w-md hidden">
+            <label for="direction" class="block text-lg font-semibold text-center">Direction:</label>
+            <select id="direction" class="mt-1 p-2 w-full bg-gray-700 text-white border rounded">
+                <option value="left">Left</option>
+                <option value="right">Right</option>
+            </select>
+        </div>
+
+        <!-- Run Simulation Button -->
+        <button onclick="runSimulationAndScroll()" class="px-6 py-2 bg-[#c562ae] text-white rounded-lg hover:bg-[#a34c8d]">Run Simulation</button>
+
+        <!-- Output Section -->
+        <div id="results-section" class="w-full max-w-md space-y-2 text-center">
+            <p id="sequence" class="text-lg whitespace-nowrap">Sequence: </p>
+            <p id="seekTime" class="text-lg">Total Seek Time: </p>
+            <p id="avgSeekTime" class="text-lg">Average Seek Time: </p>
+            <p id="throughput" class="text-lg">Throughput: </p>
+        </div>
+
+        <!-- Chart with white background -->
+        <div id="chart-container" class="max-w-4xl w-full bg-white border rounded-lg p-4 hidden mb-12">
+            <canvas id="chart" class="w-full h-64"></canvas>
+        </div>
+    </div>
+
     <script>
-        // Read the 'algo' parameter from URL and update the algorithm display accordingly.
+        // Assigning algorithm-specific heading and details
         const urlParams = new URLSearchParams(window.location.search);
         const algoParam = urlParams.get('algo');
-        
-        //  description for the chosen algorithm.
-            const algoDetails = {
-                "FCFS": "Processes requests in the order they arrive.",
-                "SSTF": "Serves the request closest to the current head position.",
-                "SCAN": "Moves in one direction, servicing requests, then reverses.",
-                "CSCAN": "Moves in one direction; on reaching the end, it jumps to the start.",
-                "LOOK": "Like SCAN but stops at the last request.",
-                "CLOOK": "Like CSCAN but only goes as far as the last request."
-            };
-           
-            if (algoParam) {
-                // Display the selected algorithm name.
-                document.getElementById('algoDisplay').innerText = algoParam + " Simulation";
-                // Display details for the selected algorithm.
-                document.getElementById('algoDetails').innerText = algoDetails[algoParam] || "";
-                
-                // Show direction selector only if algorithm requires it
-                if (["SCAN", "CSCAN", "LOOK", "CLOOK"].includes(algoParam.toUpperCase())) {
-                    document.getElementById('direction-container').classList.remove('hidden');
-                }
-            }
-    </script>
 
-    <script src="script.js"></script>
-</body>
+        const algoDetails = {
+            "FCFS": {
+                name: "First-Come, First-Serve (FCFS)",
+                description: ["The mechanics of FCFS are straightforward:",
+                               "1. Arrival: Processes enter the system and are placed in a queue in the order they arrive.",
+                               "2. Execution: The CPU takes the first process from the front of the queue, executes it until it is complete, and then removes it from the queue.",
+                               "3. Repeat: The CPU takes the next process in the queue and repeats the execution process.",
+                               "This continues until there are no more processes left in the queue."]
+            },
+            "SSTF": {
+                name: "Shortest Seek Time First (SSTF)",
+                description: ["The disk head moves to the request closest to its current position.",
+                              "It reduces seek time compared to FCFS but can lead to starvation.",
+                              "Frequently serves nearby requests, making distant ones wait longer.",
+                               "Efficient but not always fair, as it may ignore far requests for a long time."]
+            },
+            "SCAN": {
+                name: "SCAN (Elevator Algorithm)",
+                description: ["The head moves in one direction, servicing all requests along the way.",
+                            "Upon reaching the last request in that direction, it reverses.",
+                            "Ensures all requests are eventually served but may have high waiting times.",
+                            "Works like an elevator, continuously moving back and forth."]
+            },
+            "CSCAN": {
+                name: "Circular SCAN (C-SCAN)",
+                description: ["The head moves in one direction only, servicing requests.",
+                            "Once it reaches the last request in that direction, it jumps back to the beginning.",
+                             "Unlike SCAN, it does not serve requests while returning.",
+                         "Provides more uniform wait times but increases seek time."]
+            },
+            "LOOK": {
+                name: "LOOK",
+                description: ["Similar to SCAN but stops at the last request in a direction instead of going to the disk’s edge.",
+                                "Reduces unnecessary head movement, improving efficiency.",
+                                "The head reverses direction only when no more requests are in the current direction.",
+                                "More efficient than SCAN while still ensuring fairness."]
+            },
+            "CLOOK": {
+                name: "Circular LOOK (C-LOOK)",
+                description: ["Determine the initial position of the disk head.",
+                    "Sort the pending disk requests in the order in which they will be serviced.",
+                "Scan the disk in the chosen direction, servicing requests as they are encountered.",
+                    "When the last request in the current direction has been serviced, immediately return to the beginning of the disk and repeat the process."]
+            }
+        };
+
+        if (algoParam && algoDetails[algoParam]) {
+            document.getElementById('algoHeading').innerText = algoDetails[algoParam].name;
+            document.getElementById('algoDetails').innerHTML = algoDetails[algoParam].description.join('<br>');
+
+            // Show direction selector for algorithms that need it
+            if (["SCAN", "CSCAN", "LOOK", "CLOOK"].includes(algoParam.toUpperCase())) {
+                document.getElementById('direction-container').classList.remove('hidden');
+            }
+        } else {
+            document.getElementById('algoHeading').innerText = "Unknown Algorithm";
+            document.getElementById('algoDetails').innerText = "No details available.";
+        }
+
+        // Function to run simulation, show chart, and scroll to results
+        function runSimulationAndScroll() {
+            // Run the simulation
+            runAlgorithm();
+
+            // Show the chart container
+            const chartContainer = document.getElementById("chart-container");
+            if (chartContainer) {
+                chartContainer.classList.remove("hidden");
+            }
+
+            // Scroll to the results section 
+            setTimeout(() => {
+                const resultsSection = document.getElementById("results-section");
+                if (resultsSection) {
+                    const rect = resultsSection.getBoundingClientRect();
+                    const scrollPosition = rect.top + window.scrollY - 10;
+                    window.scrollTo({ top: scrollPosition, behavior: "smooth" });
+                    console.log("Scrolled to position:", scrollPosition);
+                }
+            }, 100);
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'926feaaa7d7e78c6',t:'MTc0MzA4OTI5Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

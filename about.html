@@ -2,61 +2,65 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
+    <!-- Ensure responsiveness across various screen sizes -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Disk Scheduling Algorithm</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body class="relative h-screen bg-cover bg-center bg-fixed" style="background-image: url('Web_Photo_Editor.jpg  ');">
     
-    <nav class="relative p-4">
-        <div class="container mx-auto flex justify-between items-center ml-3">
-            <div class="flex justify-between items-center">
-                <a href="#" class="text-white text-xl font-bold">Disk Scheduling Simulator </a>
-                <img src="image2.png" class="h-12">
+    
+</head>
+<body class="relative h-screen bg-cover bg-center bg-fixed text-white" style="background-image: url('bg5.jpg');">
+    
+    <nav class="relative p-3 bg-black bg-opacity-60 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center px-5">
+            <div class="flex items-center space-x-3">
+                
+                <img src="logofinal.png" class="h-11">
+               
+                <a href="index.html" class="text-white text-2xl font-bold">Disk Scheduling Simulator</a>
             </div>
-            <ul class="flex space-x-6">
-                <li><a href="index.html" class="text-white hover:underline">Home</a></li>
-                <li><a href="about.html" class="text-white hover:underline">About</a></li>
+            
+            <ul class="flex space-x-5 ml-7">
+                <li><a href="index.html" class="text-white text-lg font-semibold inline-block transition-transform duration-300 ease-in-out transform will-change-transform hover:scale-110">Home</a></li>
+                <li><a href="https://github.com/SurichaSinha/Disk-Scheduling-Simulator" class="text-white text-lg font-semibold inline-block transition-transform duration-300 ease-in-out transform will-change-transform hover:scale-110" target="_blank">GitHub</a></li>
             </ul>
         </div>
     </nav>
     
 
-    <div class="relative flex flex-col items-center justify-center h-full text-white text-center space-y-6">
+    <div class="relative flex flex-col items-center justify-start h-[calc(100vh-4.5rem)] text-white text-center pt-5 space-y-5 overflow-hidden">
+        <div class="max-w-4xl mx-auto p-5">
 
-        <div class="max-w-4xl mx-auto p-6">
             <h1 class="text-3xl font-bold text-center text-white mb-4">About Our Operating System Project</h1>
             
-            <section class="mb-6 border rounded-lg p-5 bg-gray-400 bg-opacity-50 flex flex-col ">
-                <h2 class="text-2xl font-semibold text-gray-800">Disk Scheduling Algorithms Simulation</h2>
-                <p class="mt-2 text-gray-700">This project is a simulation of various disk scheduling algorithms,
-                     aiming to enhance understanding of how they work in managing disk I/O operations. 
-                     Our system allows users to visualize different scheduling techniques such as FCFS, 
-                     SSTF, SCAN, C-SCAN, LOOK and C-LOOK through an interactive interface.</p>
+            <!-- Project overview -->
+            <section class="mb-5 border rounded-lg p-4 bg-gray-400 bg-opacity-50 flex flex-col">
+                <h2 class="text-2xl font-semibold text-white">Disk Scheduling Algorithms Simulation</h2>
+                <p class="mt-2 text-white text-base">This project offers a simulation of various disk scheduling algorithms, designed to deepen understanding of disk I/O management. Our system enables users to explore techniques such as FCFS, SSTF, SCAN, C-SCAN, LOOK, and C-LOOK through an interactive and visually engaging interface.</p>
             </section>
             
-            <section class="mb-6 border rounded-lg p-5 bg-gray-400 bg-opacity-50 flex flex-col ">
-                <h2 class="text-2xl font-semibold text-gray-800">Project Features</h2>
-                <ul class="mt-2 list-disc pl-6 text-gray-700 text-left">
-                    <li><strong>Simulated Engine (PHP): </strong>Handles the core logic for scheduling and processing disk requests.</li>
-                    <li><strong>User Interface (HTML & CSS): </strong> Provides a clean and responsive design for user interaction.</li>
-                    <li><strong>Visualization (JavaScript): </strong> Displays the movement of the disk head dynamically for better comprehension.</li>
+            <!-- Project features  -->
+            <section class="mb-5 border rounded-lg p-4 bg-gray-400 bg-opacity-50 flex flex-col">
+                <h2 class="text-2xl font-semibold text-white">Project Features</h2>
+                <ul class="mt-2 list-disc pl-6 text-white text-base text-left">
+                    <li><strong>Simulated Engine (PHP):</strong> Manages the core logic for scheduling and processing disk requests efficiently.</li>
+                    <li><strong>User Interface (HTML & CSS):</strong> Delivers a clean, responsive design to enhance user interaction.</li>
+                    <li><strong>Visualization (JavaScript):</strong> Illustrates disk head movements dynamically for improved comprehension.</li>
                 </ul>
             </section>
             
-            <section class="mb-6 border rounded-lg p-5 bg-gray-400 bg-opacity-50 flex flex-col ">
-                <h2 class="text-2xl font-semibold text-gray-800">Team Members</h2>
-                <ul class="mt-2 list-disc pl-6 text-gray-700 text-left">
+            <!-- List team members and their roles in a clear section -->
+            <section class="mb-5 border rounded-lg p-4 bg-gray-400 bg-opacity-50 flex flex-col">
+                <h2 class="text-2xl font-semibold text-white">Team Members</h2>
+                <ul class="mt-2 list-disc pl-6 text-white text-base text-left">
                     <li><strong>Suricha Sinha</strong> – Backend Development (PHP Simulation Engine)</li>
                     <li><strong>Sweety Biju</strong> – Frontend Development (HTML, CSS)</li>
                     <li><strong>Aditya Parasher</strong> – Visualization & Animation (JavaScript)</li>
                 </ul>
             </section>
         </div>
-
-        
     </div>
 </body>
-
 </html>
