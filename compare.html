@@ -2,79 +2,85 @@
 <html>
 <head>
     <title>Disk Scheduling Algorithm Comparison</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>    <!--For chart -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-900 text-white">
-    <nav class="relative p-4">
-        <div class="container mx-auto flex justify-between items-center ml-3">
-            <div class="flex justify-between items-center">
-                <a href="#" class="text-white text-xl font-bold">Disk Scheduling Simulator </a>
-                <img src="image2.png" class="h-12">
+
+<body class="relative min-h-screen bg-cover bg-center text-white" style="background-image: url('bg5.jpg');">
+    
+    <nav class="relative p-4 bg-black bg-opacity-60 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center px-6">
+            <div class="flex items-center space-x-3">
+                <img src="logofinal.png" class="h-12">
+                <a href="index.html" class="text-white text-2xl font-bold">Disk Scheduling Simulator</a>
             </div>
-            <ul class="flex space-x-6">
-                <li><a href="index.html" class="text-white hover:underline">Home</a></li>
-                <li><a href="about.html" class="text-white hover:underline">About</a></li>
+            <ul class="flex space-x-6 ml-8">
+                <li><a href="index.html" class="text-white text-lg font-semibold inline-block transition-transform duration-300 ease-in-out transform will-change-transform hover:scale-110">Home</a></li>
+                <li><a href="about.html" class="text-white text-lg font-semibold inline-block transition-transform duration-300 ease-in-out transform will-change-transform hover:scale-110">About Us</a></li>
             </ul>
         </div>
     </nav>
-    <header class="text-center p-5 bg-gray-800 shadow-lg">
-        <h1 class="text-3xl font-bold">Disk Scheduling Comparison</h1>
-    </header>
-    <div class="mx-auto p-6">
-        
-        <div class="mb-4">
-            <label class="block font-semibold">Requests (comma-separated):</label>
-            <input type="text" id="requests" class="w-full p-2 border rounded bg-gray-700 text-white" placeholder="e.g., 98,183,37,122,14,124,65,67">
-        </div>
-        
-        <div class="mb-4">
-            <label class="block font-semibold">Head Position:</label>
-            <input type="text" id="head" class="w-full p-2 border rounded bg-gray-700 text-white" placeholder="e.g., 53">
-        </div>
-        
-        <div class="mb-4">
-            <label class="block font-semibold">Algorithms to Compare:</label>
-            <div class="space-y-2">
-                <label><input type="checkbox" id="fcfs" value="fcfs" > FCFS</label>
-                <label><input type="checkbox" id="sstf" value="sstf" > SSTF</label>
-                <label><input type="checkbox" id="scan" value="scan"> SCAN</label>
-                <label><input type="checkbox" id="cscan" value="cscan"> C-SCAN</label>
-                <label><input type="checkbox" id="look" value="look"> LOOK</label>
-                <label><input type="checkbox" id="clook" value="clook"> C-LOOK</label>
+
+    <div class="flex flex-col items-center min-h-[calc(100vh-4rem)] space-y-6 pt-6 px-4 pb-12">
+        <header class="text-center">
+            <h1 class="text-5xl font-bold">Disk Scheduling Comparison</h1>
+        </header>
+        <div class="w-full flex flex-col items-center space-y-6">
+            <div class="max-w-md w-full">
+                <label class="block font-semibold text-center text-xl">Requests (comma-separated):</label>
+                <input type="text" id="requests" class="mt-1 p-2 w-full border rounded bg-gray-700 text-white" placeholder="e.g., 98,183,37,122,14,124,65,67">
             </div>
-        </div>
-        
-        <div class="mb-4 hidden" id="direction-container">
-            <label class="block font-semibold">Direction:</label>
-            <select id="direction" class="w-full p-2 border rounded bg-gray-700 text-white">
-                <option value="left">Left</option>
-                <option value="right">Right</option>
-            </select>
-        </div>
-        
-        <button onclick="compareAlgorithms()" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">Compare Algorithms</button>
-        
-        <div class="mt-6">
-            <table class="w-full border-collapse border border-gray-300 text-center">
-                <thead>
-                    <tr class="bg-gray-200 bg-gray-700 text-white">
-                        <th class="border p-2">Algorithm</th>
-                        <th class="border p-2">Sequence</th>
-                        <th class="border p-2">Total Seek Time</th>
-                        <th class="border p-2">Avg Seek Time</th>
-                        <th class="border p-2">Throughput</th>
-                    </tr>
-                </thead>
-                <tbody id="comparisonTableBody"></tbody>
-            </table>
-        </div>
-        
-        <div class="mt-6">
-            <canvas id="comparisonChart" class="w-full h-96"></canvas>
+            
+            <div class="max-w-md w-full">
+                <label class="block font-semibold text-center text-xl">Head Position:</label>
+                <input type="text" id="head" class="mt-1 p-2 w-full border rounded bg-gray-700 text-white" placeholder="e.g., 53">
+            </div>
+            
+            <div class="max-w-md w-full">
+                <label class="block font-semibold text-center text-xl">Algorithms to Compare:</label>
+                <div class="space-y-4">
+                    <label><input type="checkbox" id="fcfs" value="fcfs"> FCFS</label>
+                    <label><input type="checkbox" id="sstf" value="sstf"> SSTF</label>
+                    <label><input type="checkbox" id="scan" value="scan"> SCAN</label>
+                    <label><input type="checkbox" id="cscan" value="cscan"> C-SCAN</label>
+                    <label><input type="checkbox" id="look" value="look"> LOOK</label>
+                    <label><input type="checkbox" id="clook" value="clook"> C-LOOK</label>
+                </div>
+            </div>
+            
+            <div class="max-w-md w-full hidden" id="direction-container">
+                <label class="block font-semibold text-center text-xl">Direction:</label>
+                <select id="direction" class="mt-1 p-2 w-full border rounded bg-gray-700 text-white">
+                    <option value="left">Left</option>
+                    <option value="right">Right</option>
+                </select>
+            </div>
+            
+            <button onclick="compareAlgorithmsAndScroll()" class="px-6 py-2 bg-[#c562ae] text-white rounded-lg hover:bg-[#a34c8d]">Compare Algorithms</button>
+            
+            <div id="results-section" class="max-w-4xl w-full space-y-2 text-center hidden">
+                <table class="w-full border-collapse border border-gray-300 text-center">
+                    <thead>
+                        <tr class="bg-gray-700 text-white">
+                            <th class="border p-2">Algorithm</th>
+                            <th class="border p-2">Sequence</th>
+                            <th class="border p-2">Total Seek Time</th>
+                            <th class="border p-2">Avg Seek Time</th>
+                            <th class="border p-2">Throughput</th>
+                        </tr>
+                    </thead>
+                    <tbody id="comparisonTableBody"></tbody>
+                </table>
+            </div>
+            
+            <div id="chart-container" class="max-w-4xl w-full bg-white border rounded-lg p-4 hidden mb-12">
+                <canvas id="comparisonChart" class="w-full h-64"></canvas>
+            </div>
         </div>
     </div>
 
+
+    <!--Script to ensure output on screen-->
     <script>
         let chartInstance = null;
 
@@ -118,6 +124,31 @@
                 .catch(error => console.error('Error:', error));
         }
 
+        function compareAlgorithmsAndScroll() {
+            // Run the comparison
+            compareAlgorithms();
+
+            // Show the results section and chart container
+            const resultsSection = document.getElementById("results-section");
+            const chartContainer = document.getElementById("chart-container");
+            if (resultsSection) {
+                resultsSection.classList.remove("hidden");
+            }
+            if (chartContainer) {
+                chartContainer.classList.remove("hidden");
+            }
+
+            // Scroll 
+            setTimeout(() => {
+                if (resultsSection) {
+                    const rect = resultsSection.getBoundingClientRect();
+                    const scrollPosition = rect.top + window.scrollY - 10;
+                    window.scrollTo({ top: scrollPosition, behavior: "smooth" });
+                    console.log("Scrolled to position:", scrollPosition);
+                }
+            }, 100);
+        }
+
         function getSelectedAlgorithms() {
             return Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
         }
@@ -128,7 +159,7 @@
             results.forEach((data, index) => {
                 const row = `<tr class="border">
                     <td class="border p-2">${algorithms[index].toUpperCase()}</td>
-                    <td class="border p-2">${data.sequence.join('->')}</td>
+                    <td class="border p-2">${data.sequence.join(' -> ')}</td>
                     <td class="border p-2">${data.seekTime}</td>
                     <td class="border p-2">${data.avgSeekTime}</td>
                     <td class="border p-2">${data.throughput}</td>
@@ -137,6 +168,8 @@
             });
         }
 
+
+        //Comparison chart
         function visualizeComparison(results, algorithms) {
             const ctx = document.getElementById('comparisonChart').getContext('2d');
             
@@ -153,16 +186,86 @@
                         data: data.sequence,
                         borderColor: getRandomColor(),
                         borderWidth: 2,
-                        fill: false
+                        fill: false,
+                        pointRadius: 3,
+                        pointBackgroundColor: getRandomColor()
                     }))
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#000000',
+                                font: {
+                                    size: 16,
+                                    weight: 'bold',
+                                },
+                            },
+                        },
+                    },
+                    layout: {
+                        padding: {
+                            left: 10,
+                            right: 10,
+                            top: 10,
+                            bottom: 10,
+                        },
+                    },
                     scales: {
-                        x: { title: { display: true, text: 'Cylinder Number' } },
-                        y: { title: { display: true, text: 'Time' } }
-                    }
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Cylinder Number',
+                                color: '#000000',
+                                font: {
+                                    size: 16,
+                                    weight: 'bold',
+                                },
+                            },
+                            ticks: {
+                                color: '#000000',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold',
+                                },
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)',
+                            },
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Time',
+                                color: '#000000',
+                                font: {
+                                    size: 16,
+                                    weight: 'bold',
+                                },
+                            },
+                            ticks: {
+                                color: '#000000',
+                                font: {
+                                    size: 14,
+                                    weight: 'bold',
+                                },
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)',
+                            },
+                        },
+                    },
+                    plugins: {
+                        beforeDraw: (chart) => {
+                            const ctx = chart.ctx;
+                            ctx.save();
+                            ctx.fillStyle = '#ffffff';
+                            ctx.fillRect(0, 0, chart.width, chart.height);
+                            ctx.restore();
+                        },
+                    },
                 }
             });
         }

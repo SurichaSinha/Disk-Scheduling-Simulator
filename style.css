@@ -1,0 +1,55 @@
+
+html, body {
+    height: 100%;
+    overflow: hidden; /* Ensures no scrolling */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ensure main content takes full viewport height */
+.main-container {
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Ensures no unwanted scrolling */
+
+    
+    
+    
+}
+
+/* Prevent navigation bar from causing extra height */
+nav {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+}
+
+/* Fix background image covering the entire screen without affecting layout */
+body::before {
+    content: "";
+    position: fixed; /* Ensures it stays fixed */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('bg3.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    filter: blur(10px); /* Keeps it blurred */
+    z-index: -1; /* Ensures content is above the background */
+}
