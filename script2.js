@@ -1,30 +1,26 @@
-let chartInstance = null;
+let chartInstance = null;  // Declare a global variable to store the chart instance.
 
 function runAlgorithm() {
-    const requestsInput = document.getElementById('requests').value.trim();
-    const headInput = document.getElementById('head').value.trim();
+    const requestsInput = document.getElementById('requests').value;
+    const head = document.getElementById('head').value;
+    const algorithm = document.getElementById('algorithm').value;
+    const directionContainer = document.getElementById('direction-container');
+    let direction = '';
 
     // Check if requests or head is empty
-    if (!requestsInput || !headInput) {
+    if (!requestsInput.trim() || !head.trim()) {
         alert("Error: Please fill in both requests and head position fields.");
-        return;
+        return; // Exit the function if validation fails
     }
 
-    const requests = requestsInput.split(',').map(num => Number(num.trim()));
-    const head = parseInt(headInput);
+    const requests = requestsInput.split(',').map(Number);
+    const headParsed = parseInt(head);
 
-    // Get algorithm from URL parameter instead of innerText and convert to lowercase
-    const urlParams = new URLSearchParams(window.location.search);
-    const algorithm = urlParams.get('algo').toLowerCase(); // Convert to lowercase to match backend
-
-    const directionContainer = document.getElementById('direction-container');
-    let direction = "";
-
-    // Only include direction if the direction dropdown is visible (for scan, cscan, look, clook)
+    // Only include direction if the direction dropdown is visible (i.e., for scan, cscan, look, clook)
     if (!directionContainer.classList.contains('hidden')) {
         direction = document.getElementById('direction').value;
     }
-
+    
     fetch('backend.php', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -32,20 +28,16 @@ function runAlgorithm() {
     })
     .then(response => response.json())
     .then(data => {
-        // Check if data contains an error
-        if (data.error) {
-            alert("Error from backend: " + data.error);
-            return;
-        }
         document.getElementById('sequence').innerText = "Sequence: " + data.sequence.join(" → ");
         document.getElementById('seekTime').innerText = "Total Seek Time: " + data.seekTime;
         document.getElementById('avgSeekTime').innerText = "Average Seek Time: " + data.avgSeekTime;
-        document.getElementById('throughput').innerText = "Throughput: " + (data.throughput || "N/A");
-        
+        document.getElementById('throughput').innerText = "Throughput: " + data.throughput;
+
         visualizeDiskMovement(data.sequence);
     })
     .catch(error => console.error('Error:', error));
 }
+
 
 
 //Chart for visualisation
@@ -53,13 +45,10 @@ function visualizeDiskMovement(sequence) {
     const ctx = document.getElementById('chart').getContext('2d');
     
     if (chartInstance) {  
-        chartInstance.destroy();
+        chartInstance.destroy();  // Destroys the previous chart instance before creating a new one to prevent overlapping issues.
     }
 
-    // Create an array of indices for the x-axis positions
     const indices = Array.from({ length: sequence.length }, (_, i) => i);
-
-    
 
     chartInstance = new Chart(ctx, {
         type: 'line',
@@ -68,7 +57,7 @@ function visualizeDiskMovement(sequence) {
             datasets: [{
                 label: 'Disk Head Movement',
                 data: sequence, 
-                borderColor:' #c562ae', 
+                borderColor: '#c562ae', 
                 borderWidth: 2, 
                 fill: false,
                 pointRadius: 3, 
@@ -140,7 +129,7 @@ function visualizeDiskMovement(sequence) {
                     },
                 },
             },
-            // chart canvas
+            // chart canvas background 
             plugins: {
                 beforeDraw: (chart) => {
                     const ctx = chart.ctx;
